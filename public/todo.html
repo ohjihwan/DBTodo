@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>할 일 테스트</title>
+</head>
+<body>
+    <h2>로그인 토큰</h2>
+    <input type="text" id="token" placeholder="JWT 토큰 (자동 입력됨)" value="" readonly><br><br>
+
+    <h2>할 일 추가</h2>
+    <input type="text" id="title" placeholder="제목"><br>
+    <textarea id="description" placeholder="설명"></textarea><br>
+    <button onclick="addTodo()">추가</button>
+    <p id="add-result"></p>
+
+    <h2>할 일 목록</h2>
+    <button onclick="getTodos()">조회</button>
+    <ul id="todo-list"></ul>
+
+    <h2>할 일 수정</h2>
+    <input type="number" id="edit-id" placeholder="할 일 ID"><br>
+    <input type="text" id="edit-title" placeholder="제목"><br>
+    <textarea id="edit-description" placeholder="설명"></textarea><br>
+    <label>
+        <input type="checkbox" id="edit-done"> 완료 여부
+    </label><br>
+    <button onclick="updateTodo()">수정</button>
+    <p id="edit-result"></p>
+
+    <h2>할 일 삭제</h2>
+    <input type="number" id="delete-id" placeholder="할 일 ID"><br>
+    <button onclick="deleteTodo()">삭제</button>
+    <p id="delete-result"></p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedToken = localStorage.getItem('token');
+            if (savedToken) {
+                document.getElementById('token').value = savedToken;
+            } else {
+                alert('로그인이 필요합니다.');
+                window.location.href = 'login.html';
+            }
+        });
+
+        async function addTodo() {
+            const token = document.getElementById('token').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            const res = await fetch('http://localhost:3000/api/todos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ title, description })
+            });
+
+            const data = await res.json();
+            document.getElementById('add-result').innerText = data.message || data.error;
+        }
+
+
+        async function getTodos() {
+            const token = document.getElementById('token').value;
+
+            const res = await fetch('http://localhost:3000/api/todos', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            const todos = await res.json();
+            const list = document.getElementById('todo-list');
+            list.innerHTML = '';
+
+            todos.forEach(todo => {
+                const li = document.createElement('li');
+                li.textContent = `[${todo.id}] ${todo.title} - ${todo.description}`;
+                list.appendChild(li);
+            });
+        }
+
+        async function updateTodo() {
+            const token = document.getElementById('token').value;
+            const id = document.getElementById('edit-id').value;
+            const title = document.getElementById('edit-title').value;
+            const description = document.getElementById('edit-description').value;
+            const is_done = document.getElementById('edit-done').checked;
+
+            const res = await fetch(`http://localhost:3000/api/todos/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ title, description, is_done })
+            });
+
+            const data = await res.json();
+            document.getElementById('edit-result').innerText = data.message || data.error;
+        }
+
+        async function deleteTodo() {
+            const token = document.getElementById('token').value;
+            const id = document.getElementById('delete-id').value;
+
+            const res = await fetch(`http://localhost:3000/api/todos/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            const data = await res.json();
+            document.getElementById('delete-result').innerText = data.message || data.error;
+        }
+
+    </script>
+</body>
+</html>

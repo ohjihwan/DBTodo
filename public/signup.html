@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+</head>
+<body>
+    <h2>회원가입</h2>
+    <input type="text" id="reg-username" placeholder="아이디"><br>
+    <input type="password" id="reg-password" placeholder="비밀번호"><br>
+    <button onclick="signup()">회원가입</button>
+    <p id="signup-result"></p>
+
+    <script>
+        async function signup() {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+
+            const res = await fetch('http://localhost:3000/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('signup-result').innerText = data.message + ' - 로그인 페이지로 이동 중...';
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            } else {
+                document.getElementById('signup-result').innerText = data.message || data.error;
+            }
+        }
+    </script>
+</body>
+</html>
