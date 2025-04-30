@@ -18,8 +18,7 @@ DBTodo/
 ├── .env.example        # 환경변수 예시 파일
 ├── server.js           # Express 메인 서버
 ├── package.json        # npm 설정
-├── README.md           # 프로젝트 설명
-└── index.html          # 첫 페이지
+└── README.md           # 프로젝트 설명
 ```
 
 ## ✅ 주요 기능
