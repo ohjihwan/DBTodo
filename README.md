@@ -11,9 +11,9 @@ DBTodo/
 ├── middlewares/        # JWT 인증 미들웨어
 ├── routes/             # 라우터 정의
 ├── public/             # HTML 테스트 파일
-│   ├── signup.html
-│   ├── login.html
-│   └── todo.html
+│   ├── index.html      # 로그인 화면 (기본 진입점)
+│   ├── signup.html     # 회원가입 화면
+│   └── todo.html       # 할 일 관리 화면 (CRUD)
 ├── schema.sql          # MySQL 테이블 생성 스크립트
 ├── .env.example        # 환경변수 예시 파일
 ├── server.js           # Express 메인 서버
@@ -47,7 +47,7 @@ npm run dev
 ```
 6. 브라우저에서 테스트:
 ```
-http://localhost:3000/signup.html
+http://localhost:3000/index.html
 ```
 
 ## 💾 환경변수 예시 (.env)
@@ -59,8 +59,13 @@ DB_NAME=todo_app
 JWT_SECRET=your_secret_key
 ```
 
-## 📸 ERD
-> ERD는 VS Code ERD Editor 확장으로 작성된 이미지를 함께 첨부하거나, GitHub에 업로드해 주세요.
+## 🎨 UI 스타일
+- 전체 다크모드 테마 적용
+- 반응형 디자인으로 PC/모바일 모두 대응
+- `style.css` 공통 적용 (public 폴더)
+
+## 🗺 ERD 다이어그램
+> ERD는 `schema.erd`로 작성하고, 다이어그램 이미지는 `erd.png`로 포함시켜 GitHub에 업로드합니다.
 
 ## 👨‍💻 개발자
 오지환 / 2025년 과제 제출용 프로젝트

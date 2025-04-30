@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>회원가입</h2>
-    <input type="text" id="reg-username" placeholder="아이디"><br>
-    <input type="password" id="reg-password" placeholder="비밀번호"><br>
-    <button onclick="signup()">회원가입</button>
-    <p id="signup-result"></p>
+    <div class="container">
+        <h2>회원가입</h2>
+        <input type="text" id="signup-username" placeholder="아이디"><br>
+        <input type="password" id="signup-password" placeholder="비밀번호"><br>
+        <button type="button" onclick="signup()">회원가입</button>
+        <p id="signup-result"></p>
+    </div>
 
     <script>
         async function signup() {
-            const username = document.getElementById('reg-username').value;
-            const password = document.getElementById('reg-password').value;
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
 
             const res = await fetch('http://localhost:3000/api/signup', {
                 method: 'POST',
@@ -26,9 +29,9 @@
 
             const data = await res.json();
             if (res.ok) {
-                document.getElementById('signup-result').innerText = data.message + ' - 로그인 페이지로 이동 중...';
+                document.getElementById('signup-result').innerText = data.message + ' → 로그인 화면으로 이동 중...';
                 setTimeout(() => {
-                    window.location.href = 'login.html';
+                    window.location.href = 'index.html';
                 }, 1500);
             } else {
                 document.getElementById('signup-result').innerText = data.message || data.error;
